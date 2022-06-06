@@ -151,23 +151,6 @@ CREATE TABLE IF NOT EXISTS Contact_RO (
 );
 
 DROP TABLE IF EXISTS RO_Data CASCADE;
----------------------------------------------
--- Methode INHERITS
----------------------------------------------
--- CREATE TABLE IF NOT EXISTS RO_Data (
---     sensitive_data BOOLEAN NOT NULL,
---     personal_data BOOLEAN NOT NULL,
---     data_security TEXT
--- ) INHERITS (Research_Output);
-
-
--- CREATE TABLE IF NOT EXISTS RO_Service (
---     type_of_service TEXT NOT NULL,
---     end_project_TRL INT NOT NULL
--- ) INHERITS (Research_Output);
--------------------------------------------
--- Methode SANS INHERITS
--------------------------------------------
 CREATE TABLE IF NOT EXISTS RO_Data (
     id_ro INT PRIMARY KEY NOT NULL,
     sensitive_data BOOLEAN NOT NULL,
@@ -179,6 +162,7 @@ CREATE TABLE IF NOT EXISTS RO_Data (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
 DROP TABLE IF EXISTS RO_service CASCADE;
 CREATE TABLE IF NOT EXISTS RO_Service (
     id_ro INT PRIMARY KEY NOT NULL,
@@ -191,7 +175,7 @@ CREATE TABLE IF NOT EXISTS RO_Service (
         ON UPDATE CASCADE
 );
 
-
+DROP TABLE IF EXISTS Metadata_Info;
 CREATE TABLE IF NOT EXISTS Metadata_Info (
     id_md_info serial NOT NULL PRIMARY KEY,
     description_md TEXT NOT NULL,
@@ -204,6 +188,7 @@ CREATE TABLE IF NOT EXISTS Metadata_Info (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
 DROP TABLE IF EXISTS RO_Can_Reference CASCADE;
 CREATE TABLE IF NOT EXISTS RO_Can_Reference (
     id_ro_init INT NOT NULL,
@@ -248,7 +233,7 @@ CREATE TABLE IF NOT EXISTS Host (
     support_versioning BOOLEAN
 );
 
-DROP TYPE IF EXISTS Acces CASCADE;
+DROP TYPE IF EXISTS Access CASCADE;
 CREATE TYPE Access AS ENUM (
     'Open',
     'On Demand',
