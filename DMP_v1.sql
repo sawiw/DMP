@@ -1,6 +1,11 @@
 DROP TABLE IF EXISTS Contact CASCADE;
 CREATE TABLE IF NOT EXISTS Contact (
     id_contact serial NOT NULL PRIMARY KEY,
+    type_contact TEXT,
+        CHECK ( type_contact  IN (
+            'Organization',
+            'Person'
+    )),
     last_name TEXT NOT NULL,
     first_name TEXT,
     mail TEXT NOT NULL,
@@ -29,7 +34,7 @@ CREATE TABLE IF NOT EXISTS Project (
     start_date DATE NOT NULL,
     duration INT,
     id_funding INT NOT NULL,
-    type TEXT NOT NULL,
+    type_project TEXT NOT NULL,
     website TEXT,
     objectives TEXT NOT NULL,
     id_wp INT NOT NULL,
@@ -212,7 +217,7 @@ CREATE TABLE IF NOT EXISTS Embargo (
 DROP TABLE IF EXISTS Licence_Distribution CASCADE;
 CREATE TABLE IF NOT EXISTS Licence_Distribution (
     id_licence serial NOT NULL PRIMARY KEY,
-    name TEXT NOT NULL,
+    name_licence TEXT NOT NULL,
     url TEXT
 );
 
@@ -230,8 +235,8 @@ CREATE TABLE IF NOT EXISTS Host (
 DROP TABLE IF EXISTS Distribution CASCADE;
 CREATE TABLE IF NOT EXISTS Distribution (
     id_distribution serial NOT NULL PRIMARY KEY,
-    access TEXT,
-        CHECK ( access IN (
+    access_distribution TEXT,
+        CHECK ( access_distribution IN (
             'Open',
             'On Demand',
             'Embargo'
@@ -247,7 +252,7 @@ CREATE TABLE IF NOT EXISTS Distribution (
                 'To',
                 'Po'
         )),
-    format TEXT,
+    format_distribution TEXT,
     download_url TEXT,
     id_ro INT NOT NULL,
         CONSTRAINT fk_distribution__ro
