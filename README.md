@@ -2,6 +2,8 @@
 
 Version du 7 juin 2022
 
+> / .idea dossier pour l'IDE /
+
 ## DB Diagram
 
 ### Infos :
@@ -20,7 +22,7 @@ Utilisation de **CHECK IN ( '...', '...' )** au lieu des **ENUM** pour :
 
 **Distribution** (*size_unit*) = {'Ko', 'Mo', 'Go', 'To', 'Po'}
 
-##### Diagramme de la base de données après le script
+##### Diagramme de la base de données après le script `DMP_v1.sql`
 
 ![alt db_diagram](https://i.ibb.co/6NqkTp8/diagram.png)
 
