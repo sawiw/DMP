@@ -126,7 +126,13 @@ CREATE TABLE IF NOT EXISTS Research_Output (
     utility TEXT,
     issued DATE,
     ro_language TEXT NOT NULL,
-    ro_cost JSON
+    ro_cost JSON,
+    id_romp INT NOT NULL,
+    CONSTRAINT fk_ro__romp
+        FOREIGN KEY (id_romp)
+        REFERENCES ROMP (id_romp)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 COMMENT ON COLUMN Research_Output.ro_cost IS 
