@@ -62,15 +62,6 @@ CREATE TABLE IF NOT EXISTS Contact_Project (
         ON UPDATE CASCADE
 );
 
-DROP TYPE IF EXISTS licence_romp CASCADE ;
-CREATE TYPE licence_romp AS ENUM (
-    'CC-BY-4.0',
-    'CC-BY-NC-4.0',
-    'CC-BY--ND-4.0',
-    'CC-BY--SA-4.0',
-    'CC0-1.0'
-); 
-
 DROP TABLE IF EXISTS ROMP CASCADE;
 CREATE TABLE ROMP(
     id_romp SERIAL NOT NULL PRIMARY KEY,
@@ -80,7 +71,14 @@ CREATE TABLE ROMP(
     submission_date DATE NOT NULL,
     version_romp TEXT NOT NULL,
     deliverable TEXT NOT NULL,
-    licence licence_romp DEFAULT 'CC-BY-4.0',
+    licence_romp TEXT DEFAULT 'CC-BY-4.0',
+        CHECK ( licence_romp IN (
+                'CC-BY-4.0',
+                'CC-BY-NC-4.0',
+                'CC-BY--ND-4.0',
+                'CC-BY--SA-4.0',
+                'CC0-1.0'
+    )),
     ethical_issues TEXT,
     CONSTRAINT fk_romp__project
         FOREIGN KEY (id_project)
@@ -94,33 +92,23 @@ CREATE TABLE ROMP(
         ON UPDATE CASCADE
 );
 
-DROP TYPE IF EXISTS cost_type CASCADE;
-CREATE TYPE cost_type AS ENUM (
-    'Storage',
-    'Archiving',
-    'Re-use',
-    'Other'
-);
-
-DROP TYPE IF EXISTS ro_type CASCADE;
-CREATE TYPE ro_type AS ENUM (
-    'Data Set',
-    'Service',
-    'Data Paper',
-    'Publication',
-    'Software',
-    'Model'
-);
-
 DROP TABLE IF EXISTS Research_Output CASCADE;
 CREATE TABLE IF NOT EXISTS Research_Output (
     id_ro SERIAL NOT NULL PRIMARY KEY,
     title TEXT NOT NULL,
-    ro_type ro_type NOT NULL,
+    ro_type TEXT NOT NULL,
+        CHECK ( ro_type IN (
+            'Data Set',
+            'Service',
+            'Data Paper',
+            'Publication',
+            'Software',
+            'Model'
+    )),
     identifier TEXT,
     ro_description TEXT,
     standard_used TEXT,
-    keyword JSON, -- keyword de l'api
+    keyword JSON, -- keyword de l' API
     reused BOOLEAN NOT NULL,
     lineage TEXT,
     utility TEXT,
@@ -239,30 +227,26 @@ CREATE TABLE IF NOT EXISTS Host (
     support_versioning BOOLEAN
 );
 
-DROP TYPE IF EXISTS Access CASCADE;
-CREATE TYPE Access AS ENUM (
-    'Open',
-    'On Demand',
-    'Embargo'
-);
-
-DROP TYPE IF EXISTS Size_Unit CASCADE;
-CREATE TYPE Size_Unit AS ENUM (
-    'Ko',
-    'Mo',
-    'Go',
-    'To',
-    'Po'
-);
-
 DROP TABLE IF EXISTS Distribution CASCADE;
 CREATE TABLE IF NOT EXISTS Distribution (
     id_distribution serial NOT NULL PRIMARY KEY,
-    access Access,
+    access TEXT,
+        CHECK ( access IN (
+            'Open',
+            'On Demand',
+            'Embargo'
+        )),
     access_url TEXT NOT NULL,
     access_protocol TEXT NOT NULL,
     size_value INT,
-    size_unit Size_Unit,
+    size_unit TEXT,
+        CHECK ( size_unit IN (
+                'Ko',
+                'Mo',
+                'Go',
+                'To',
+                'Po'
+        )),
     format TEXT,
     download_url TEXT,
     id_ro INT NOT NULL,
