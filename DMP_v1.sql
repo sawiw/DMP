@@ -10,7 +10,14 @@ CREATE TABLE IF NOT EXISTS Contact (
     first_name TEXT,
     mail TEXT NOT NULL,
     affiliation TEXT NOT NULL,
-    identifier TEXT
+    identifier TEXT,
+    role_contact TEXT NOT NULL,
+        CHECK ( role_contact IN(
+            'Coord',
+            'DMP_Leader',
+            'WP_Leader',
+            'Task_Leader'
+    ))
 );
 
 DROP TABLE IF EXISTS Funding CASCADE;
