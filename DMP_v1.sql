@@ -1,22 +1,17 @@
 DROP TABLE IF EXISTS Contact CASCADE;
 CREATE TABLE IF NOT EXISTS Contact (
     id_contact serial NOT NULL PRIMARY KEY,
-    type_contact TEXT,
-        CHECK ( type_contact  IN (
-            'Organization',
-            'Person'
-    )),
     last_name TEXT NOT NULL,
     first_name TEXT,
     mail TEXT NOT NULL,
     affiliation TEXT NOT NULL,
+    laboratory_or_department TEXT,
     identifier TEXT,
     role_contact TEXT NOT NULL,
         CHECK ( role_contact IN(
-            'Coord',
+            'Coordinator',
             'DMP_Leader',
-            'WP_Leader',
-            'Task_Leader'
+            'WP_Participant'
     ))
 );
 
@@ -40,7 +35,7 @@ CREATE TABLE IF NOT EXISTS Project (
     acronym TEXT NOT NULL,
     start_date DATE NOT NULL,
     duration INT,
-    id_funding INT NOT NULL,
+    id_funding INT,
     type_project TEXT NOT NULL,
     website TEXT,
     objectives TEXT NOT NULL,
@@ -137,7 +132,7 @@ CREATE TABLE IF NOT EXISTS Research_Output (
 
 COMMENT ON COLUMN Research_Output.ro_cost IS 
 'ro_cost {"type": "", "value": "", "unit": ""}
- avec type = ENUM : {Storage, Archiving, Re-Use, Other}';
+ avec type : {Storage / Archiving / Re-Use / Other}';
 
 DROP TABLE IF EXISTS Contact_RO CASCADE;
 CREATE TABLE IF NOT EXISTS Contact_RO (
