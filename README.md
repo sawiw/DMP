@@ -7,11 +7,13 @@
 
 ## Infos :
 
-### Utilisation de `CHECK IN` au lieu des **`ENUM`** pour :
+>### Utilisation de `CHECK IN` au lieu des **`ENUM`** pour :
 >
-> > *Contact* (**type_contact**) **:** `{Organization', 'Person'}`
->
-> >  *Contact* (**role_contact**) **:** `{'Coordinator', 'DMP_Leader', 'WP_Participant'}`
+> > **Contact** 
+> > - (**type_contact**) **:** `{Organization', 'Person'}`
+> >
+> >
+> > - (**role_contact**) **:** `{'Coordinator', 'DMP_Leader', 'WP_Participant'}`
 >
 > > **Research_Output** 
 > > - (**ro_cost**)  **:**  `{Organization', 'Person'}`
@@ -19,11 +21,14 @@
 > >
 > > - (**ro_type**)  **:**  `{Data Set', 'Service', 'Data Paper', 'Publication', 'Software', 'Model'}`
 >
-> > *ROMP* *(**licence_romp**) **:** (`CC-BY-4.0` par défaut) sinon **:** `{CC-BY-4.0', 'CC-BY-NC-4.0', 'CC-BY--ND-4.0', 'CC-BY--SA-4.0', 'CC0-1.0'}`
+> > **ROMP* *
+> > - (**licence_romp**) **:** (`CC-BY-4.0` par défaut) sinon **:** `{CC-BY-4.0', 'CC-BY-NC-4.0', 'CC-BY--ND-4.0', 'CC-BY--SA-4.0', 'CC0-1.0'}`
 >
-> > *Distribution* (**access_distribution**)  **:** `{Open', 'On Demand', 'Embargo'}`
->
-> > *Distribution* (**size_unit**) **:** `{Ko', 'Mo', 'Go', 'To', 'Po'}`
+> > **Distribution** 
+> > - (**access_distribution**)  **:** `{Open', 'On Demand', 'Embargo'}`
+> >
+> >
+> > - (**size_unit**) **:** `{Ko', 'Mo', 'Go', 'To', 'Po'}`
 
 ### Utilisation du type JSON pour :
 > 
