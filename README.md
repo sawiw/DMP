@@ -1,6 +1,6 @@
 # DB - DMP
 
-Version du 7 juin 2022
+Version du 8 juin 2022
 
 > / .idea dossier pour l'IDE /
 
@@ -26,5 +26,5 @@ Utilisation de **CHECK IN ( '...', '...' )** au lieu des **ENUM** pour :
 
 ##### Diagramme de la base de données après le script `DMP_v1.sql`
 
-![alt db_diagram]()
+![alt db_diagram](/diagram.jpg)
 
