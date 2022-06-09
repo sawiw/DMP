@@ -1,4 +1,19 @@
-DROP TABLE IF EXISTS Contact CASCADE;
+DROP TABLE IF EXISTS Distribution;
+DROP TABLE IF EXISTS Host;
+DROP TABLE IF EXISTS Licence_Distribution;
+DROP TABLE IF EXISTS Embargo;
+DROP TABLE IF EXISTS RO_Can_Reference;
+DROP TABLE IF EXISTS Metadata_Info;
+DROP TABLE IF EXISTS RO_service;
+DROP TABLE IF EXISTS RO_Data;
+DROP TABLE IF EXISTS Contact_RO;
+DROP TABLE IF EXISTS Research_Output;
+DROP TABLE IF EXISTS ROMP;
+DROP TABLE IF EXISTS Contact_Project;
+DROP TABLE IF EXISTS Project;
+DROP TABLE IF EXISTS Funding;
+DROP TABLE IF EXISTS Contact;
+
 CREATE TABLE IF NOT EXISTS Contact (
     id_contact serial NOT NULL PRIMARY KEY,
     last_name TEXT NOT NULL,
@@ -6,70 +21,55 @@ CREATE TABLE IF NOT EXISTS Contact (
     mail TEXT NOT NULL,
     affiliation TEXT NOT NULL,
     laboratory_or_department TEXT,
-    identifier TEXT,
-    role_contact TEXT NOT NULL,
-        CHECK ( role_contact IN(
-            'Coordinator',
-            'DMP_Leader',
-            'WP_Participant'
-    ))
+    identifier TEXT
 );
 
-DROP TABLE IF EXISTS Funding CASCADE;
 CREATE TABLE IF NOT EXISTS Funding (
     id_funding serial NOT NULL PRIMARY KEY,
     grant_funding INT NOT NULL,
     id_contact INT NOT NULL,
     CONSTRAINT fk_funding__contact
-        FOREIGN KEY (id_contact)
-        REFERENCES Contact(id_contact) 
-        ON DELETE CASCADE 
-        ON UPDATE CASCADE
+    FOREIGN KEY (id_contact)
+    REFERENCES Contact(id_contact)
 );
 
-DROP TABLE IF EXISTS Project CASCADE;
 CREATE TABLE IF NOT EXISTS Project (
     id_project serial NOT NULL PRIMARY KEY,
     title TEXT NOT NULL,
     abstract TEXT NOT NULL,
-    acronym TEXT NOT NULL,
+    acronym TEXT,
     start_date DATE NOT NULL,
     duration INT,
     id_funding INT,
-    type_project TEXT NOT NULL,
     website TEXT,
-    objectives TEXT NOT NULL,
-    id_wp INT NOT NULL,
+    objectives TEXT,
+    id_project_parent INT,
     CONSTRAINT fk_project__funding
         FOREIGN KEY (id_funding)
-        REFERENCES Funding (id_funding) 
-        ON DELETE CASCADE 
-        ON UPDATE CASCADE,
+        REFERENCES Funding (id_funding),
     CONSTRAINT fk_project__wp
-        FOREIGN KEY (id_wp)
-        REFERENCES Project (id_project) 
-        ON DELETE CASCADE 
-        ON UPDATE CASCADE
+        FOREIGN KEY (id_project_parent)
+        REFERENCES Project (id_project)
 );
 
-DROP TABLE IF EXISTS Contact_Project CASCADE;
 CREATE TABLE IF NOT EXISTS Contact_Project (
     id_contact INT NOT NULL,
     id_project INT NOT NULL,
+    role_contact TEXT NOT NULL,
+    CHECK ( role_contact IN(
+    'Coordinator',
+    'DMP_Leader',
+    'WP_Participant'
+    )),
     PRIMARY KEY (id_contact, id_project),
     CONSTRAINT fk_c_p__contact
-        FOREIGN KEY (id_contact) 
-        REFERENCES Contact (id_contact) 
-        ON DELETE CASCADE 
-        ON UPDATE CASCADE,
+        FOREIGN KEY (id_contact)
+        REFERENCES Contact (id_contact),
     CONSTRAINT fk_c_p__project
-        FOREIGN KEY (id_project) 
-        REFERENCES Project (id_project) 
-        ON DELETE CASCADE 
-        ON UPDATE CASCADE
+    FOREIGN KEY (id_project)
+    REFERENCES Project (id_project)
 );
 
-DROP TABLE IF EXISTS ROMP CASCADE;
 CREATE TABLE ROMP(
     id_romp SERIAL NOT NULL PRIMARY KEY,
     id_project INT NOT NULL,
@@ -89,17 +89,13 @@ CREATE TABLE ROMP(
     ethical_issues TEXT,
     CONSTRAINT fk_romp__project
         FOREIGN KEY (id_project)
-        REFERENCES Project (id_project) 
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
+        REFERENCES Project (id_project),
     CONSTRAINT fk_romp__contact
         FOREIGN KEY (id_contact)
-        REFERENCES Contact (id_contact) 
-        ON DELETE CASCADE 
-        ON UPDATE CASCADE
+        REFERENCES Contact (id_contact)
 );
 
-DROP TABLE IF EXISTS Research_Output CASCADE;
+
 CREATE TABLE IF NOT EXISTS Research_Output (
     id_ro SERIAL NOT NULL PRIMARY KEY,
     title TEXT NOT NULL,
@@ -126,32 +122,24 @@ CREATE TABLE IF NOT EXISTS Research_Output (
     CONSTRAINT fk_ro__romp
         FOREIGN KEY (id_romp)
         REFERENCES ROMP (id_romp)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
 
 COMMENT ON COLUMN Research_Output.ro_cost IS 
 'ro_cost {"type": "", "value": "", "unit": ""}
  avec type : {Storage / Archiving / Re-Use / Other}';
 
-DROP TABLE IF EXISTS Contact_RO CASCADE;
 CREATE TABLE IF NOT EXISTS Contact_RO (
     id_contact INT NOT NULL,
     id_ro INT NOT NULL,
     PRIMARY KEY (id_contact, id_ro),
     CONSTRAINT fk_contact_ro__contact
         FOREIGN KEY (id_contact)
-        REFERENCES Contact (id_contact) 
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
+        REFERENCES Contact (id_contact),
     CONSTRAINT fk_contact_ro__ro
         FOREIGN KEY (id_ro)
-        REFERENCES Research_Output (id_ro) 
-        ON DELETE CASCADE 
-        ON UPDATE CASCADE
+        REFERENCES Research_Output (id_ro)
 );
 
-DROP TABLE IF EXISTS RO_Data CASCADE;
 CREATE TABLE IF NOT EXISTS RO_Data (
     id_ro INT PRIMARY KEY NOT NULL,
     sensitive_data BOOLEAN NOT NULL,
@@ -160,11 +148,8 @@ CREATE TABLE IF NOT EXISTS RO_Data (
     CONSTRAINT fk_ro_data__ro
         FOREIGN KEY (id_ro)
         REFERENCES Research_Output (id_ro)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS RO_service CASCADE;
 CREATE TABLE IF NOT EXISTS RO_Service (
     id_ro INT PRIMARY KEY NOT NULL,
     type_of_service TEXT NOT NULL,
@@ -172,11 +157,9 @@ CREATE TABLE IF NOT EXISTS RO_Service (
     CONSTRAINT fk_ro_service__ro
         FOREIGN KEY (id_ro)
         REFERENCES Research_Output (id_ro)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS Metadata_Info;
+
 CREATE TABLE IF NOT EXISTS Metadata_Info (
     id_md_info serial NOT NULL PRIMARY KEY,
     description_md TEXT NOT NULL,
@@ -186,28 +169,20 @@ CREATE TABLE IF NOT EXISTS Metadata_Info (
     CONSTRAINT fk_md_info__ro
         FOREIGN KEY (id_ro)
         REFERENCES Research_Output (id_ro)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS RO_Can_Reference CASCADE;
 CREATE TABLE IF NOT EXISTS RO_Can_Reference (
     id_ro_init INT NOT NULL,
     id_ro_ref INT NOT NULL CHECK (id_ro_init != id_ro_ref),
     PRIMARY KEY (id_ro_init, id_ro_ref),
     CONSTRAINT fk_ro_init_can_ref__ro
         FOREIGN KEY (id_ro_init)
-        REFERENCES Research_Output (id_ro)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
+        REFERENCES Research_Output (id_ro),
     CONSTRAINT fk_ro_ref__ro
       FOREIGN KEY (id_ro_ref)
       REFERENCES Research_Output (id_ro)
-      ON DELETE NO ACTION
-      ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS Embargo CASCADE;
 CREATE TABLE IF NOT EXISTS Embargo (
     id_embargo serial NOT NULL PRIMARY KEY,
     start_date DATE NOT NULL,
@@ -216,14 +191,12 @@ CREATE TABLE IF NOT EXISTS Embargo (
     intentional_restrictions TEXT
 );
 
-DROP TABLE IF EXISTS Licence_Distribution CASCADE;
 CREATE TABLE IF NOT EXISTS Licence_Distribution (
     id_licence serial NOT NULL PRIMARY KEY,
     name_licence TEXT NOT NULL,
     url TEXT
 );
 
-DROP TABLE IF EXISTS Host CASCADE;
 CREATE TABLE IF NOT EXISTS Host (
     id_host serial NOT NULL PRIMARY KEY,
     host_name TEXT NOT NULL,
@@ -234,7 +207,7 @@ CREATE TABLE IF NOT EXISTS Host (
     support_versioning BOOLEAN
 );
 
-DROP TABLE IF EXISTS Distribution CASCADE;
+
 CREATE TABLE IF NOT EXISTS Distribution (
     id_distribution serial NOT NULL PRIMARY KEY,
     access_distribution TEXT,
@@ -259,25 +232,17 @@ CREATE TABLE IF NOT EXISTS Distribution (
     id_ro INT NOT NULL,
         CONSTRAINT fk_distribution__ro
             FOREIGN KEY (id_ro)
-            REFERENCES Research_Output (id_ro)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE,
+            REFERENCES Research_Output (id_ro),
     id_licence INT NOT NULL,
         CONSTRAINT fk_distribution__licence_distribution
             FOREIGN KEY (id_licence)
-            REFERENCES Licence_Distribution  (id_licence)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE,
+            REFERENCES Licence_Distribution  (id_licence),
     id_host INT NOT NULL,
         CONSTRAINT fk_distribution__host
             FOREIGN KEY (id_host)
-            REFERENCES Host (id_host)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE,
+            REFERENCES Host (id_host),
     id_embargo INT NOT NULL,
     CONSTRAINT fk_distribution__embargo
             FOREIGN KEY (id_embargo)
             REFERENCES Embargo (id_embargo)
-            ON DELETE CASCADE
-            ON UPDATE CASCADE
 );
