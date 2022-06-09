@@ -39,7 +39,7 @@
 
 ## DB Diagram
 >
->###### Diagramme de la base de données après le script `DMP_v1.sql`
+>###### Diagramme de la base de données après le script `GLOBAL_Script_v1.sql`
 >
 >![diagram]()
 
