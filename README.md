@@ -38,13 +38,13 @@
 
 ## (ACTUAL) DB Diagram
 >
->###### Diagramme de la base de données actuelle après le script `CURRENT_Script_v1.sql`
+>###### Diagramme de la base de données actuelle après le script `CURRENT_Script.sql`
 >
 >![diagram](current.png)
 
 ## (GLOBAL) DB Diagram
 >
->###### Diagramme de la base de données actuelle après le script `CURRENT_Script_v1.sql`
+>###### Diagramme de la base de données actuelle après le script `GLOBAL_Script.sql`
 >
 >![diagram](global.png)
 
