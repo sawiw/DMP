@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS Funding (
     grant_funding INT NOT NULL,
     id_contact INT NOT NULL,
     CONSTRAINT fk_funding__contact
-    FOREIGN KEY (id_contact)
-    REFERENCES Contact(id_contact)
+        FOREIGN KEY (id_contact)
+        REFERENCES Contact(id_contact)
 );
 
 CREATE TABLE IF NOT EXISTS Project (
@@ -35,11 +35,11 @@ CREATE TABLE IF NOT EXISTS Project (
     objectives TEXT,
     id_project_parent INT,
     CONSTRAINT fk_project__funding
-    FOREIGN KEY (id_funding)
-    REFERENCES Funding (id_funding),
+        FOREIGN KEY (id_funding)
+        REFERENCES Funding (id_funding),
     CONSTRAINT fk_project__wp
-    FOREIGN KEY (id_project_parent)
-    REFERENCES Project (id_project)
+        FOREIGN KEY (id_project_parent)
+        REFERENCES Project (id_project)
 );
 
 CREATE TABLE IF NOT EXISTS Contact_Project (
@@ -53,13 +53,11 @@ CREATE TABLE IF NOT EXISTS Contact_Project (
     )),
     PRIMARY KEY (id_contact, id_project),
     CONSTRAINT fk_c_p__contact
-    FOREIGN KEY (id_contact)
-    REFERENCES Contact (id_contact)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+        FOREIGN KEY (id_contact)
+        REFERENCES Contact (id_contact),
     CONSTRAINT fk_c_p__project
-    FOREIGN KEY (id_project)
-    REFERENCES Project (id_project)
+        FOREIGN KEY (id_project)
+        REFERENCES Project (id_project)
 );
 
 CREATE TABLE ROMP(
