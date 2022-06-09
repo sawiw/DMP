@@ -38,7 +38,7 @@
 
 ## (ACTUAL) DB Diagram
 >
->###### Diagramme actuelle de la base de données créé à partir du script `CURRENT_Script.sql`
+>###### Diagramme de la base de données actuelle créé à partir du script `CURRENT_Script.sql`
 >
 >![diagram](current.png)
 
